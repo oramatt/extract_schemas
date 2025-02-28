@@ -17,7 +17,7 @@
 # MongoDB connection details
 MONGO_HOST="localhost"
 MONGO_PORT="23456"
-DATABASES=("test")  # Space delimited list of databases to scan
+DATABASES=("test" "moredata")  # Space delimited list of databases to scan
 OUTPUT_DIR="mongodb_metadata"  # Base directory for output
 PARALLEL_LIMIT=4  # Maximum number of parallel jobs
 
@@ -337,8 +337,8 @@ extract_workload_profile() {
         return 1
     fi
     
-    # Create simple workload summary
-    echo "Workload extracted on $(date)" > "$coll_folder/workload_summary.txt"
+    # Create simple workload summary, might be overkill 👷
+    # echo "Workload extracted on $(date)" > "$coll_folder/workload_summary.txt"
     
     return 0
 }
@@ -414,10 +414,10 @@ for DB_NAME in "${DATABASES[@]}"; do
             
             # Create summary
             echo "{
-  \"database\": \"$DB_NAME\",
-  \"collection\": \"$coll_name\",
-  \"extractedAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",
-  \"extractionStatus\": \"$collection_status\"
+                  \"database\": \"$DB_NAME\",
+                  \"collection\": \"$coll_name\",
+                  \"extractedAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",
+                  \"extractionStatus\": \"$collection_status\"
 }" > "$COLL_FOLDER/summary.json"
             
             log_info "Completed metadata extraction for $DB_NAME.$coll_name ($collection_status)"
