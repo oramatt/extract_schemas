@@ -8,29 +8,39 @@ This repository provides two scripts for working with MongoDB metadata extractio
 
 ## Features
 ### extractMongo.sh
-- **Extract Document Count**: Retrieves an estimated count of documents per collection.
-- **Extract Storage Statistics**: Captures collection size, index size, and storage statistics.
-- **Extract System Information**: Fetches MongoDB version, CPU usage, memory, disk IOPS, and network metrics.
-- **Extract Sample Document**: Retrieves a single sample document from each collection and saves it as `example_document.json`.
-- **Extract Schema and Indexes**: Identifies field types and index structures in collections.
-- **Extract Workload Profile**:
-  - If the **MongoDB profiler** is enabled (`system.profile`), fetches profiling data.
-  - If the profiler is **disabled**, retrieves workload data from **MongoDB in-memory logs** (`getLog: 'global'`).
+- **Document Count Extraction**: Retrieves an estimated count of documents per collection using `estimatedDocumentCount()`.
+- **Storage Statistics**: Captures collection size, index size, and detailed storage metrics using `collStats`.
+- **System Information**: Fetches MongoDB version, CPU usage, memory consumption, disk I/O, and network activity statistics.
+- **Sample Document Retrieval**: Extracts a representative document from each collection using `findOne()`.
+- **Schema and Index Detection**: 
+  - Identifies field types in collections by examining up to 100 sample documents
+  - Detects MongoDB-specific types (ObjectId, Date, NumberLong, etc.)
+  - Recognizes GeoJSON structures (Point, LineString, Polygon)
+  - Extracts all collection indexes using `getIndexes()`
+- **Workload Profile Extraction**:
+  - Uses the MongoDB profiler data when enabled (`profiling level 1-2`)
+  - Falls back to MongoDB in-memory logs (`getLog: 'global'`) when profiling is disabled
+- **Parallel Processing**: Extracts data from multiple collections concurrently with a configurable job limit.
+- **Basic Authentication Support**: Supports username/password authentication with custom authentication database.
 
 ### restoreMongo.py
-- **Recreates Collections**: Restores collections from extracted metadata.
-- **Uses Sample Documents**: If available, uses `example_document.json` to structure collections.
-- **Falls Back to Schema**: If no sample document exists, it generates synthetic data using MongoDB schema metadata from `schema_and_indexes.json`.
-- **Supports Index Recreation**: Ensures indexes are rebuilt during restoration.
-- **Handles Geospatial Data**: Correctly processes GeoJSON types such as `Point`, `LineString`, and `Polygon`.
-- **Synthetic Data Generation**: Uses the `faker` library to generate missing sample documents based on schema definitions.
-- **Handles Data Encoding Issues**: Fixes BSON encoding issues such as `Decimal128` conversions.
-- **Parallel Processing**: Can restore multiple collections concurrently.
-- **Verbose Logging**: Provides detailed logs for errors and actions performed.
+- **Collection Recreation**: Provides a pathway to recreate collections from extracted metadata.
+- **Flexible Data Source**: 
+  - Uses sample documents from `example_document.json` when available
+  - Falls back to schema information from `schema_and_indexes.json` when needed
+- **Synthetic Data Generation**: Uses the Python `faker` library to generate placeholder data when working with schema-only information.
+- **MongoDB Type Support**: Handles various MongoDB data types including:
+  - Standard types (string, int, long, double, boolean, date)
+  - MongoDB-specific types (ObjectId, Decimal128)
+  - GeoJSON structures (Point, LineString, Polygon)
+- **Basic Error Handling**: Provides error messages for missing or invalid metadata files.
 
 ## Prerequisites
-- **MongoDB shell (`mongosh`)** must be installed and accessible.
+- **MongoDB shell (`mongosh`)** must be installed and accessible from the command line.
 - **Python 3.x** is required to run `restoreMongo.py`.
+- **Python packages**: 
+  - `faker`: For generating synthetic data
+  - `pymongo`: For MongoDB connectivity
 - The user must have **read access** to the targeted databases for extraction.
 - The user must have **write access** to MongoDB for restoration.
 - Optional: If authentication is required, provide a valid username, password, and authentication database.
@@ -40,22 +50,23 @@ This repository provides two scripts for working with MongoDB metadata extractio
 Edit the script variables to define the MongoDB connection details and databases to scan:
 
 ```bash
+# MongoDB connection details
 MONGO_HOST="localhost"
 MONGO_PORT="23456"
-DATABASES=("test" "yelp")  # List of databases to scan
-OUTPUT_DIR="mongodb_metadata"  # Output directory for extracted metadata
-PARALLEL_LIMIT=4  # Maximum parallel jobs
+DATABASES=("test" "yelp")  # Space delimited list of databases to scan
+OUTPUT_DIR="mongodb_metadata"  # Base directory for output
+PARALLEL_LIMIT=4  # Maximum number of parallel jobs
 
-# Authentication (if required)
-USERNAME=""  # MongoDB username
-PASSWORD=""  # MongoDB password
-AUTH_DB=""   # Authentication database (e.g., "admin")
+# Optional MongoDB authentication
+USERNAME=""  # MongoDB username (if needed)
+PASSWORD=""  # MongoDB password (if needed)
+AUTH_DB=""   # Authentication database (e.g., "admin", if needed)
 ```
 
 ### restoreMongo.py
 Edit the script variables to define MongoDB connection details:
 
-```bash
+```python
 # Configuration: MongoDB connection details
 MONGO_HOST = "localhost"
 MONGO_PORT = 23456
@@ -63,7 +74,6 @@ DATABASES_DIR = "mongodb_metadata"  # Directory containing metadata
 USERNAME = ""  # MongoDB username (if needed)
 PASSWORD = ""  # MongoDB password (if needed)
 AUTH_DB = ""   # Authentication database (if needed)
-
 ```
 
 ## Running the Scripts
@@ -72,7 +82,14 @@ Run the extraction script:
 ```bash
 bash extractMongo.sh
 ```
-This will create structured JSON files containing metadata and workload analysis.
+This creates a structured directory containing JSON files with MongoDB metadata.
+
+### Restore Collections
+To recreate collections from extracted metadata:
+```bash
+python3 restoreMongo.py
+```
+This script reads the extracted metadata and restores collections using sample documents or schema information.
 
 ## Output Structure
 The extracted metadata is stored under the `mongodb_metadata/` directory in the following structure:
@@ -85,27 +102,32 @@ mongodb_metadata/
    │   │   ├── system_info.json
    │   │   ├── example_document.json
    │   │   ├── schema_and_indexes.json
-   │   │   ├── workload.json
+   │   │   └── workload.json
 ```
 
-### Restore Collections
-To recreate collections from extracted metadata, use:
-```bash
-python3 restoreMongo.py
-```
-This script scans the extracted metadata and restores collections using either sample documents or schema information.
+## Limitations
+### extractMongo.sh
+- Examines only up to 100 documents per collection for schema detection
+- Detects only top-level fields in documents (limited support for nested objects)
+- All data extraction occurs at the collection level
+- No built-in TLS/SSL support
 
+### restoreMongo.py
+- Creates only one synthetic document when using schema-based generation
+- Does not specifically recreate indexes from the extracted metadata
+- Includes the original `_id` field which may cause conflicts during restoration
+- No built-in TLS/SSL support
 
 ## Conclusion
-These scripts assist in analyzing MongoDB workloads and restoring collections efficiently. The extracted metadata aids in migration planning and workload analysis, ensuring seamless transitions to other environments such as Oracle 23ai.
+These scripts aid in analyzing MongoDB workloads and restoring collections for testing or migration. The extracted metadata helps in understanding database structure, typical documents, and workload patterns.
 
 ---
 ## FAQ
 1. What is the purpose of this toolset?
   - In order to help customers of course 🦄 (TBD)
-2.  Why is the metadata extract written in shell script?
-  - Providing a shell script that invokes native MongoDB tools such as `mongosh` reduces additional dependancies and supply chain concerns. By providing a simple shell script, a customer's security can review the functions and data collection without the need to reverse engineer or decompile the solution.
-3.  What can I do with the `restoreMongo.py` script?
-  - The `restoreMongo.py` script will attempt to recreate MongoDB databases and the associated collections. Customers can navigate the directory structure and rename folders that represent either databases or collections based on their needs. To create new databases or collections, simply copy the folder structure to the approipate base directory. Additionally, customers can edit the `example_document.json` and/or `schema_and_indexes.json` to remove any data they feel is sensitive or proprietary.
-
-
+2. Why is the metadata extract written in shell script?
+  - Providing a shell script that invokes native MongoDB tools such as `mongosh` reduces additional dependencies and supply chain concerns. By providing a simple shell script, a customer's security team can review the functions and data collection without the need to reverse engineer or decompile the solution.
+3. What can I do with the `restoreMongo.py` script?
+  - The `restoreMongo.py` script will attempt to recreate MongoDB databases and the associated collections. Customers can navigate the directory structure and rename folders that represent either databases or collections based on their needs. To create new databases or collections, simply copy the folder structure to the appropriate base directory. Additionally, customers can edit the `example_document.json` and/or `schema_and_indexes.json` to remove any data they feel is sensitive or proprietary.
+4. Does the extraction process modify my MongoDB data?
+  - No, the extraction process is entirely read-only and does not modify your MongoDB data in any way.
