@@ -17,9 +17,9 @@
 # MongoDB connection details
 MONGO_HOST="localhost"
 MONGO_PORT="23456"
-DATABASES=("test" "tweetme" "emptyonpurpose")  # Space delimited list of databases to scan
+DATABASES=("emptyonpurpose" "test" "tweetme")  # Space delimited list of databases to scan
 OUTPUT_DIR="mongodb_metadata"  # Base directory for output
-PARALLEL_LIMIT=4  # Maximum number of parallel jobs
+PARALLEL_LIMIT=32  # Maximum number of parallel jobs
 
 # MongoDB authentication
 USERNAME=""  # MongoDB username (if needed)
@@ -421,6 +421,12 @@ for DB_NAME in "${DATABASES[@]}"; do
     collections_json=$(mongosh --quiet --host "$MONGO_HOST" --port "$MONGO_PORT" "$DB_NAME" "${AUTH_ARGS[@]}" --eval "
         JSON.stringify(db.getCollectionNames());
     " 2>/dev/null)
+
+    # If the database does not exist or is empty, log it
+    if [[ -z "$collections_json" ]]; then
+        log_info "No collections found in database: $DB_NAME (database may not exist)"
+        continue  # Skip this database and move to the next
+    fi
     
     # Parse collection names
     collections=($(echo "$collections_json" | sed 's/\[//;s/\]//g' | tr ',' ' ' | tr -d '"'))
@@ -432,7 +438,7 @@ for DB_NAME in "${DATABASES[@]}"; do
     job_count=0
 
     for coll_name in "${collections[@]}"; do
-        # Skip system collections
+            # Skip system collections
         if [[ -z "$coll_name" ]] || [[ "$coll_name" == system.* ]]; then
             log_info "Skipping system collection: $coll_name"
             continue
@@ -449,13 +455,13 @@ for DB_NAME in "${DATABASES[@]}"; do
             
             # Run extraction with basic error handling
             # echo "Running extract in parallel"
-            extract_document_count "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
-            extract_storage_stats "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
-            extract_system_info "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
-            extract_sample_document "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
-            extract_schema_and_indexes "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
-            extract_workload_profile "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
-            extract_users_and_roles "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
+            extract_document_count "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
+            extract_storage_stats "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
+            extract_system_info "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
+            extract_sample_document "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
+            extract_schema_and_indexes "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
+            extract_workload_profile "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
+            extract_users_and_roles "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" 
             
             # Create summary
             echo "{
