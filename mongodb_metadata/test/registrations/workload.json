@@ -1,0 +1,8339 @@
+{
+  source: 'database_profiler',
+  database: 'test',
+  collection: 'registrations',
+  profilerEntries: [
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$collStats': {
+              storageStats: {}
+            }
+          },
+          {
+            '$group': {
+              _id: null,
+              capped: {
+                '$first': '$storageStats.capped'
+              },
+              count: {
+                '$sum': '$storageStats.count'
+              },
+              size: {
+                '$sum': {
+                  '$toDouble': '$storageStats.size'
+                }
+              },
+              storageSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.storageSize'
+                }
+              },
+              totalIndexSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.totalIndexSize'
+                }
+              },
+              freeStorageSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.freeStorageSize'
+                }
+              },
+              unscaledCollSize: {
+                '$sum': {
+                  '$multiply': [
+                    {
+                      '$toDouble': '$storageStats.avgObjSize'
+                    },
+                    {
+                      '$toDouble': '$storageStats.count'
+                    }
+                  ]
+                }
+              },
+              nindexes: {
+                '$max': '$storageStats.nindexes'
+              }
+            }
+          },
+          {
+            '$addFields': {
+              avgObjSize: {
+                '$cond': {
+                  if: {
+                    '$ne': [
+                      '$count',
+                      0
+                    ]
+                  },
+                  then: {
+                    '$divide': [
+                      '$unscaledCollSize',
+                      {
+                        '$toDouble': '$count'
+                      }
+                    ]
+                  },
+                  else: 0
+                }
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('3c83149f-7802-47cf-b05c-ae0487dcecf5')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 284,
+      protocol: 'op_msg',
+      millis: 10,
+      ts: ISODate('2025-03-13T17:41:09.342Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('d8961f05-06b9-473e-8307-503e325f2bf8')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-13T17:41:09.402Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$indexStats': {}
+          },
+          {
+            '$project': {
+              name: 1,
+              usageHost: '$host',
+              usageCount: '$accesses.ops',
+              usageSince: '$accesses.since'
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('69fef380-3220-4332-8a7e-2e09048e1e6e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 3,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 408,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-13T17:41:09.402Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        projection: {
+          _id: 0,
+          __doc: '$$ROOT',
+          __size: {
+            '$bsonSize': '$$ROOT'
+          }
+        },
+        skip: 0,
+        limit: 100,
+        maxTimeMS: 60000,
+        lsid: {
+          id: UUID('17384a7d-a642-4113-b1c3-473c0c69840b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 100,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 100,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 14278,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 90,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 100,
+        executionTimeMillisEstimate: 0,
+        works: 101,
+        advanced: 100,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 100,
+        inputStage: {
+          stage: 'PROJECTION_DEFAULT',
+          nReturned: 100,
+          executionTimeMillisEstimate: 0,
+          works: 100,
+          advanced: 100,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          transformBy: {},
+          inputStage: {
+            stage: 'COLLSCAN',
+            nReturned: 100,
+            executionTimeMillisEstimate: 0,
+            works: 100,
+            advanced: 100,
+            needTime: 0,
+            needYield: 0,
+            saveState: 0,
+            restoreState: 0,
+            isEOF: 0,
+            direction: 'forward',
+            docsExamined: 100
+          }
+        }
+      },
+      ts: ISODate('2025-03-13T17:41:09.403Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$limit': 10
+          }
+        ],
+        cursor: {},
+        maxTimeMS: 60000,
+        lsid: {
+          id: UUID('67ad5db5-8763-4b1b-bf06-86cf06ba3080')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 1460,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 661,
+      ts: ISODate('2025-03-13T17:41:09.403Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$collStats': {
+              storageStats: {}
+            }
+          },
+          {
+            '$project': {
+              indexSizes: {
+                '$objectToArray': '$storageStats.indexSizes'
+              }
+            }
+          },
+          {
+            '$unwind': '$indexSizes'
+          },
+          {
+            '$group': {
+              _id: '$indexSizes.k',
+              size: {
+                '$sum': {
+                  '$toDouble': '$indexSizes.v'
+                }
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('1167d81e-3231-4625-ae2f-2778fbfdfe1a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 3,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-13T17:41:09.406Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$count': 'count'
+          }
+        ],
+        hint: '_id_',
+        cursor: {},
+        maxTimeMS: 5000,
+        lsid: {
+          id: UUID('3c83149f-7802-47cf-b05c-ae0487dcecf5')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 10200001,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 58,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('61')
+          }
+        }
+      },
+      flowControl: {},
+      storage: {
+        data: {
+          bytesRead: Long('2439672'),
+          timeReadingMicros: Long('11389')
+        }
+      },
+      responseLength: 126,
+      protocol: 'op_msg',
+      millis: 1772,
+      planSummary: 'COUNT_SCAN { _id: 1 }',
+      planningTimeMicros: 420,
+      ts: ISODate('2025-03-13T17:41:11.175Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'remove',
+      ns: 'test.registrations',
+      command: {
+        q: {},
+        limit: 0
+      },
+      keysExamined: 0,
+      docsExamined: 10200001,
+      ndeleted: 10200001,
+      keysDeleted: 40799963,
+      numYield: 2692,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('2693')
+          }
+        },
+        Global: {
+          acquireCount: {
+            r: Long('1'),
+            w: Long('2693')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('2693')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('2693')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('2693')
+      },
+      storage: {
+        data: {
+          bytesRead: Long('397253047'),
+          timeReadingMicros: Long('2616741')
+        }
+      },
+      millis: 78066,
+      planSummary: 'COLLSCAN',
+      execStats: {
+        isCached: false,
+        stage: 'BATCHED_DELETE',
+        nReturned: 0,
+        executionTimeMillisEstimate: 77709,
+        works: 10200041,
+        advanced: 0,
+        needTime: 10200040,
+        needYield: 0,
+        saveState: 2692,
+        restoreState: 2692,
+        isEOF: 1,
+        nWouldDelete: 10200001,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10200001,
+          executionTimeMillisEstimate: 883,
+          works: 10200002,
+          advanced: 10200001,
+          needTime: 0,
+          needYield: 0,
+          saveState: 1022732,
+          restoreState: 1022732,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10200001
+        }
+      },
+      ts: ISODate('2025-03-13T17:42:35.833Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$project': {
+              email: 1,
+              domain: {
+                '$arrayElemAt': [
+                  {
+                    '$split': [
+                      '$email',
+                      '@'
+                    ]
+                  },
+                  1
+                ]
+              }
+            }
+          },
+          {
+            '$group': {
+              _id: '$domain',
+              count: {
+                '$sum': 1
+              }
+            }
+          },
+          {
+            '$sort': {
+              count: -1
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      hasSortStage: true,
+      cursorExhausted: true,
+      numYield: 1,
+      nreturned: 0,
+      queryHash: 'AA2CA7CB',
+      planCacheKey: 'E1D86237',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('3')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 98,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 298,
+      ts: ISODate('2025-03-13T17:44:20.225Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        skip: 0,
+        limit: 10,
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 0,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 3,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 139,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 10,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 0,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 0,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 0
+        }
+      },
+      ts: ISODate('2025-03-13T17:44:20.255Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 1,
+      nreturned: 0,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 28,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 24626,
+      ts: ISODate('2025-03-13T17:44:20.304Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 0,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 3,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 476,
+      ts: ISODate('2025-03-13T17:44:23.362Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$project': {
+              email: 1,
+              domain: {
+                '$arrayElemAt': [
+                  {
+                    '$split': [
+                      '$email',
+                      '@'
+                    ]
+                  },
+                  1
+                ]
+              }
+            }
+          },
+          {
+            '$group': {
+              _id: '$domain',
+              count: {
+                '$sum': 1
+              }
+            }
+          },
+          {
+            '$sort': {
+              count: -1
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      hasSortStage: true,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 0,
+      queryHash: 'AA2CA7CB',
+      planCacheKey: 'E1D86237',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 2,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 134,
+      ts: ISODate('2025-03-13T17:44:26.471Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        skip: 0,
+        limit: 10,
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 0,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 82,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 10,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 0,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 0,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 0
+        }
+      },
+      ts: ISODate('2025-03-13T17:44:26.475Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 0,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 107,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 472,
+      ts: ISODate('2025-03-13T17:44:26.480Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'insert',
+      ns: 'test.registrations',
+      command: {
+        insert: 'registrations',
+        documents: [
+          {
+            name: 'Matt DeMarco',
+            email: 'matthew.demarco@oracle.com',
+            notes: '🦄',
+            image: null,
+            _id: ObjectId('67d31987dc58fc42b0af4557'),
+            __v: 0
+          }
+        ],
+        ordered: true,
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      ninserted: 1,
+      keysInserted: 5,
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('1')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('1')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('1')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('1')
+      },
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 1,
+      ts: ISODate('2025-03-13T17:44:39.960Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$project': {
+              email: 1,
+              domain: {
+                '$arrayElemAt': [
+                  {
+                    '$split': [
+                      '$email',
+                      '@'
+                    ]
+                  },
+                  1
+                ]
+              }
+            }
+          },
+          {
+            '$group': {
+              _id: '$domain',
+              count: {
+                '$sum': 1
+              }
+            }
+          },
+          {
+            '$sort': {
+              count: -1
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      hasSortStage: true,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'AA2CA7CB',
+      planCacheKey: 'E1D86237',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 146,
+      protocol: 'op_msg',
+      millis: 5,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 371,
+      ts: ISODate('2025-03-13T17:44:42.596Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        skip: 0,
+        limit: 10,
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 2,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 190,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 10,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-13T17:44:42.606Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 131,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 628,
+      ts: ISODate('2025-03-13T17:44:42.620Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('8a3f5a89-c3d7-476d-af73-a7bbe1cf131a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 131,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 655,
+      ts: ISODate('2025-03-13T17:45:17.812Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'insert',
+      ns: 'test.registrations',
+      command: {
+        insert: 'registrations',
+        ordered: true,
+        lsid: {
+          id: UUID('8a3f5a89-c3d7-476d-af73-a7bbe1cf131a')
+        },
+        '$db': 'test'
+      },
+      ninserted: 9,
+      keysInserted: 48,
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('1')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('1')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('1')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('1')
+      },
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 1,
+      ts: ISODate('2025-03-13T17:45:17.838Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('8a3f5a89-c3d7-476d-af73-a7bbe1cf131a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 131,
+      protocol: 'op_msg',
+      millis: 3,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 659,
+      ts: ISODate('2025-03-13T17:45:17.843Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$project': {
+              email: 1,
+              domain: {
+                '$arrayElemAt': [
+                  {
+                    '$split': [
+                      '$email',
+                      '@'
+                    ]
+                  },
+                  1
+                ]
+              }
+            }
+          },
+          {
+            '$group': {
+              _id: '$domain',
+              count: {
+                '$sum': 1
+              }
+            }
+          },
+          {
+            '$sort': {
+              count: -1
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      hasSortStage: true,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 5,
+      queryHash: 'AA2CA7CB',
+      planCacheKey: 'E1D86237',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 301,
+      protocol: 'op_msg',
+      millis: 5,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 286,
+      ts: ISODate('2025-03-13T17:45:22.251Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        skip: 0,
+        limit: 10,
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 2,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 269,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 10,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 10,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-13T17:45:22.258Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 131,
+      protocol: 'op_msg',
+      millis: 13,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 8763,
+      ts: ISODate('2025-03-13T17:45:22.292Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {
+          'location.coordinates': {
+            '$exists': true,
+            '$ne': []
+          }
+        },
+        projection: {
+          name: 1,
+          location: 1
+        },
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 9,
+      queryHash: 'B080F802',
+      planCacheKey: '924161D4',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 1181,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 1033,
+      execStats: {
+        isCached: false,
+        stage: 'PROJECTION_SIMPLE',
+        nReturned: 9,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 9,
+        needTime: 1,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        transformBy: {},
+        inputStage: {
+          stage: 'COLLSCAN',
+          filter: {
+            '$and': [
+              {
+                'location.coordinates': {
+                  '$exists': true
+                }
+              },
+              {
+                'location.coordinates': {
+                  '$not': {
+                    '$eq': []
+                  }
+                }
+              }
+            ]
+          },
+          nReturned: 9,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 9,
+          needTime: 1,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-13T17:45:25.229Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        projection: {
+          name: 1,
+          city: 1,
+          location: 1,
+          image: 1
+        },
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '585D3A23',
+      planCacheKey: '0DA6CABF',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 1499,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 739,
+      execStats: {
+        isCached: false,
+        stage: 'PROJECTION_SIMPLE',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        transformBy: {},
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-13T17:45:25.422Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 131,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 700,
+      ts: ISODate('2025-03-13T17:45:27.664Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$project': {
+              email: 1,
+              domain: {
+                '$arrayElemAt': [
+                  {
+                    '$split': [
+                      '$email',
+                      '@'
+                    ]
+                  },
+                  1
+                ]
+              }
+            }
+          },
+          {
+            '$group': {
+              _id: '$domain',
+              count: {
+                '$sum': 1
+              }
+            }
+          },
+          {
+            '$sort': {
+              count: -1
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      hasSortStage: true,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 5,
+      queryHash: 'AA2CA7CB',
+      planCacheKey: 'E1D86237',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 301,
+      protocol: 'op_msg',
+      millis: 3,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 263,
+      ts: ISODate('2025-03-13T17:45:30.164Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        skip: 0,
+        limit: 10,
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 2,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 158,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 10,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 10,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-13T17:45:30.170Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5b33c619-cf0e-4a90-89ff-78e5d602397f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 131,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 523,
+      ts: ISODate('2025-03-13T17:45:30.175Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('3fcbe58c-6d47-4cb0-a140-8db579e4fd6f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 3,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T15:26:14.400Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('946a2524-f8fc-44bf-94c5-c3166ce897c8')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 6,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 5582,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 1,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 1,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T15:26:14.401Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('3cdabef0-e06f-49ad-98fb-650edb18855d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 3,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 2132,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 1,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 1,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T15:26:14.401Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('3cdabef0-e06f-49ad-98fb-650edb18855d')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T15:26:14.431Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('2b443f5f-1719-4c41-827a-76c8d49b88dc')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 7,
+      ts: ISODate('2025-03-14T15:26:14.438Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('3cdabef0-e06f-49ad-98fb-650edb18855d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T15:26:14.442Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('3ac118a7-df95-45a0-b312-6425d4f2b262')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 8,
+      ts: ISODate('2025-03-14T16:01:46.940Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('3b70f329-7b66-4e04-9533-83c04920430d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 199,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:01:46.952Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('0c65c89b-df97-4882-80b2-91989895da26')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 67,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:01:46.957Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('87f80661-a59d-434f-b2b4-3cca92deab68')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:01:46.959Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('0c65c89b-df97-4882-80b2-91989895da26')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:01:46.962Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('58b27c36-0e75-453e-9fe5-470ce5b79bce')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:01:46.964Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$collStats': {
+              storageStats: {}
+            }
+          },
+          {
+            '$group': {
+              _id: null,
+              capped: {
+                '$first': '$storageStats.capped'
+              },
+              count: {
+                '$sum': '$storageStats.count'
+              },
+              size: {
+                '$sum': {
+                  '$toDouble': '$storageStats.size'
+                }
+              },
+              storageSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.storageSize'
+                }
+              },
+              totalIndexSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.totalIndexSize'
+                }
+              },
+              freeStorageSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.freeStorageSize'
+                }
+              },
+              unscaledCollSize: {
+                '$sum': {
+                  '$multiply': [
+                    {
+                      '$toDouble': '$storageStats.avgObjSize'
+                    },
+                    {
+                      '$toDouble': '$storageStats.count'
+                    }
+                  ]
+                }
+              },
+              nindexes: {
+                '$max': '$storageStats.nindexes'
+              }
+            }
+          },
+          {
+            '$addFields': {
+              avgObjSize: {
+                '$cond': {
+                  if: {
+                    '$ne': [
+                      '$count',
+                      0
+                    ]
+                  },
+                  then: {
+                    '$divide': [
+                      '$unscaledCollSize',
+                      {
+                        '$toDouble': '$count'
+                      }
+                    ]
+                  },
+                  else: 0
+                }
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('0a645ba4-2753-467d-9864-2f49c3a72c0b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 284,
+      protocol: 'op_msg',
+      millis: 7,
+      ts: ISODate('2025-03-14T16:05:32.248Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('dc4858cc-05d5-41b3-b01c-32c966a8e21a')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:05:32.278Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$indexStats': {}
+          },
+          {
+            '$project': {
+              name: 1,
+              usageHost: '$host',
+              usageCount: '$accesses.ops',
+              usageSince: '$accesses.since'
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('5aaf2f92-15a1-469e-b11a-8208ca9d9204')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 3,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 408,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:05:32.278Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$limit': 10
+          }
+        ],
+        cursor: {},
+        maxTimeMS: 60000,
+        lsid: {
+          id: UUID('6dee449c-4f3e-4034-8578-0d8f41354fd3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 85,
+      ts: ISODate('2025-03-14T16:05:32.278Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        projection: {
+          _id: 0,
+          __doc: '$$ROOT',
+          __size: {
+            '$bsonSize': '$$ROOT'
+          }
+        },
+        skip: 0,
+        limit: 100,
+        maxTimeMS: 60000,
+        lsid: {
+          id: UUID('2ea32687-2612-4999-b56d-1959e717c282')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3636,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 90,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 100,
+        inputStage: {
+          stage: 'PROJECTION_DEFAULT',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          transformBy: {},
+          inputStage: {
+            stage: 'COLLSCAN',
+            nReturned: 10,
+            executionTimeMillisEstimate: 0,
+            works: 11,
+            advanced: 10,
+            needTime: 0,
+            needYield: 0,
+            saveState: 0,
+            restoreState: 0,
+            isEOF: 1,
+            direction: 'forward',
+            docsExamined: 10
+          }
+        }
+      },
+      ts: ISODate('2025-03-14T16:05:32.279Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$count': 'count'
+          }
+        ],
+        hint: '_id_',
+        cursor: {},
+        maxTimeMS: 5000,
+        lsid: {
+          id: UUID('0a645ba4-2753-467d-9864-2f49c3a72c0b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 10,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 126,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COUNT_SCAN { _id: 1 }',
+      planningTimeMicros: 238,
+      ts: ISODate('2025-03-14T16:05:32.279Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        aggregate: 'registrations',
+        pipeline: [
+          {
+            '$collStats': {
+              storageStats: {}
+            }
+          },
+          {
+            '$project': {
+              indexSizes: {
+                '$objectToArray': '$storageStats.indexSizes'
+              }
+            }
+          },
+          {
+            '$unwind': '$indexSizes'
+          },
+          {
+            '$group': {
+              _id: '$indexSizes.k',
+              size: {
+                '$sum': {
+                  '$toDouble': '$indexSizes.v'
+                }
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('fea4907e-4b2c-412b-aaee-20898dd5729e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 3,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:05:32.282Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('804161e6-aebd-4732-be5a-f2e79ef35da6')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 231,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 2,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 2,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:10:30.692Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('061c9a48-baff-4b67-96ea-82eb5b377ec0')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      storage: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 138,
+      ts: ISODate('2025-03-14T16:10:30.698Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('1418f2cf-d21f-43d8-a1c7-6cc37255b6b1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 76,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:10:30.814Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('16aba727-6eeb-4bd4-8ddb-d687cd10a404')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:10:30.814Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('1418f2cf-d21f-43d8-a1c7-6cc37255b6b1')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 1,
+      ts: ISODate('2025-03-14T16:10:30.819Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('1418f2cf-d21f-43d8-a1c7-6cc37255b6b1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:10:30.827Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('031c7d84-d638-482b-bc4d-776e2a3cd99d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:20:33.557Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('5cbfad5b-d43b-4e33-a579-a58c74372c43')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 13,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 239,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 2,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 2,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:20:33.555Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('98adc549-3a7b-4861-b37d-a31917be9990')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 83,
+      ts: ISODate('2025-03-14T16:20:33.634Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('7a931858-2555-49d6-b75e-e842364f96dc')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 2,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 44,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:20:33.993Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('7a931858-2555-49d6-b75e-e842364f96dc')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:20:34.071Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('7a931858-2555-49d6-b75e-e842364f96dc')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:20:34.417Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('12ad9676-7f8a-466b-adf0-ca0c19fb2e46')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 26,
+      ts: ISODate('2025-03-14T16:24:26.623Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('b968b069-e055-40f2-80d0-479550e21ded')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 218,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:24:26.627Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('b1632096-89b7-45ef-b65d-6e8a61187a86')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:24:26.698Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('c938056a-2ca5-470f-b1fa-659d307fba64')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 72,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:24:26.865Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('4625184e-843f-49a8-afe1-632a5db4f49d')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:24:26.884Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('4625184e-843f-49a8-afe1-632a5db4f49d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:24:26.888Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('34253bae-d1fc-4b25-a060-b8d313e27ef9')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 31,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:03.625Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('8ddf71f9-a490-4bf1-85ea-2b9e300ec67b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 146,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:03.634Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('f2c94915-096d-44c0-9645-05da20055c5a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 31,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:03.641Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('ebd1d97a-2343-416b-b7fe-90a1f50dae01')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:45:03.644Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('ac2cf93f-0f21-48ba-8347-35f0b73bd983')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:45:03.649Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('f2c94915-096d-44c0-9645-05da20055c5a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:03.659Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('c73d3e67-abcd-4c7c-9681-5cd3616c8e21')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 32,
+      ts: ISODate('2025-03-14T16:45:26.263Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('0e091e7c-ef05-4eb6-a86e-18c19ed3f14f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 52,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:26.280Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('1cdd329c-1250-4cd8-b46a-1615d9eb5e5a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 73,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:26.286Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('0e091e7c-ef05-4eb6-a86e-18c19ed3f14f')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:45:26.288Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('69dac6a1-2320-4407-9901-796ebf070b3c')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:26.327Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('75ac9531-15da-4d27-bbee-0e2841b1c12f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:26.372Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('ad22173e-cc22-4ae6-8eef-1d71d8629aad')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:46:33.954Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('cfa3b213-3066-4f43-88d5-2ca7c330d223')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 3,
+      ts: ISODate('2025-03-14T16:46:34.423Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('4f658e4c-d294-4ebb-8ea5-fce4b39caaad')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 652,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:46:35.437Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('3023c1d2-71f9-4823-83b8-6a1b1d7d73fd')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 55,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:46:35.927Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('3023c1d2-71f9-4823-83b8-6a1b1d7d73fd')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:46:35.930Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('f46a3bc3-e700-47ed-8c24-5df348ada552')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:46:35.933Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('a06ef094-5fea-4b5d-b827-17f7750ac26a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:51:51.995Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('ac911f57-1063-4ec7-b689-8352c4de501c')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:51:52.529Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('b4835367-ef55-41dc-8814-b7f47590e940')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 136,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:51:53.512Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('3af0f988-57f8-47ac-b53d-960b23bad6e1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 85,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:51:54.111Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('3af0f988-57f8-47ac-b53d-960b23bad6e1')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:51:54.114Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('3af0f988-57f8-47ac-b53d-960b23bad6e1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:51:54.115Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('c199cd3c-1fca-494e-a822-e6cd42b2d2ef')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:55:44.682Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('f5036433-4934-435d-96e1-17e4bf8bb711')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 6,
+      ts: ISODate('2025-03-14T16:55:45.162Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('5d4d1dec-4a86-4880-ac74-c0ef4a6e01b4')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 125,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:55:46.166Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('9812dc44-c0c5-4d21-834a-770d3c0af3e6')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 91,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:55:46.654Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('9f2c7dad-07c3-4202-b55f-8503bb764d81')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:55:46.657Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('9f2c7dad-07c3-4202-b55f-8503bb764d81')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:55:46.660Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('ff12526e-09b5-4e51-8ce5-e0449c671166')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:58:40.028Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('1d2152d5-c807-432d-8ef2-24581466c373')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 8,
+      ts: ISODate('2025-03-14T16:58:41.009Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('f87902aa-514c-4463-8be1-1e497089b5ec')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 102,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:58:42.018Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('88769da1-9d50-4309-a6e9-1cccb8c5a1ac')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 107,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:58:42.473Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('88769da1-9d50-4309-a6e9-1cccb8c5a1ac')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:58:42.476Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('88769da1-9d50-4309-a6e9-1cccb8c5a1ac')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:58:42.477Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('203db70e-85c6-4a2b-b3b5-65bf0b810db8')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:59:38.358Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('13fd160e-99d5-4735-b00b-e6f3f20a8171')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 5,
+      ts: ISODate('2025-03-14T16:59:38.824Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('723ad0c5-60de-485c-8f07-d5887ced282d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 108,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:59:39.799Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('7b70a1be-4dcc-475d-aef3-5826684502d3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 97,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T16:59:40.213Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('c2649bf8-0d5b-4858-84d0-4ee6eba8cd5d')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:59:40.215Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('7b70a1be-4dcc-475d-aef3-5826684502d3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:59:40.218Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('a97647e7-7d25-4326-b391-f8911b6e453c')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:00:36.836Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('5543973f-5e5e-49ae-b9ed-2d047d29e6dd')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 3,
+      ts: ISODate('2025-03-14T17:00:37.274Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('89e65306-c91c-4d6f-9c17-e3b7bbc491d3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 55,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:00:38.207Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('1aacd1f7-e939-4aec-848f-7cb8c49148a2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 33,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:00:38.722Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('1aacd1f7-e939-4aec-848f-7cb8c49148a2')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:00:38.725Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('1aacd1f7-e939-4aec-848f-7cb8c49148a2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:00:38.726Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('e1325d74-be16-422f-8c09-13e26fdc32d5')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:02:13.838Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('932c80b5-865e-4997-8124-058100b3f7ec')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T17:02:14.296Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('32e73d2c-db43-4a94-9d70-3acd7cf24d71')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 148,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:02:15.208Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('bf90fe90-000f-4bbc-bfac-4675e8089c00')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 50,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:02:15.726Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('bf90fe90-000f-4bbc-bfac-4675e8089c00')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:02:15.729Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('87b4bbca-ea1a-4e04-ab2d-67bf098c4da4')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:02:15.732Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('6606c1d8-80ec-41be-a91f-981cdf3c5afc')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:03.797Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('4bca227f-7acb-487a-9932-258d8aeee331')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T17:03:04.247Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('219e2541-68b8-4aec-bbf1-1b688a275672')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 46,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:05.204Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('a8c42566-63a0-4ccf-a244-ba8cdfbdfa62')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 100,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:05.660Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('604d9ef4-303f-4a07-9557-98c6f62abca4')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:03:05.665Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('604d9ef4-303f-4a07-9557-98c6f62abca4')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:05.667Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('1727990e-29df-482d-9f70-ef4d2f9ca5bc')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:32.592Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('a7a82226-1037-4129-85cd-18f0388e21a8')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 7,
+      ts: ISODate('2025-03-14T17:03:33.045Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('1d568c57-3e5f-4646-b163-8ff08c480b0b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 127,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:33.994Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('26556204-2071-4f3c-911d-6db3691933b2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 405,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:34.501Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('26556204-2071-4f3c-911d-6db3691933b2')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:03:34.520Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('26556204-2071-4f3c-911d-6db3691933b2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:34.522Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('bb0d910c-8f1d-4da0-82ba-7f6d5bb7a1e0')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:06.006Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('ed341827-8d4e-4a68-aacc-47707ff1192b')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 8,
+      ts: ISODate('2025-03-14T17:04:06.489Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('fa7b5612-7ed0-4248-8899-ab4063209981')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 144,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:07.415Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('3ea70d22-718a-4a2b-8710-782f2650908a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 54,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:07.876Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('3ea70d22-718a-4a2b-8710-782f2650908a')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:04:07.879Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('3ea70d22-718a-4a2b-8710-782f2650908a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:07.880Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('a4e9e391-a366-4ffe-b588-b2ef9167bf5e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:38.052Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('2a46bbb1-84f8-4067-9fda-f23936f99236')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 6,
+      ts: ISODate('2025-03-14T17:04:38.507Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('60dba681-f7c5-4664-99f8-8f8609988dd9')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 98,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:39.453Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('bafe33e4-adf3-4aa0-9d0c-1f33d5de46f2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 57,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:39.912Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('bafe33e4-adf3-4aa0-9d0c-1f33d5de46f2')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:04:39.916Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('bafe33e4-adf3-4aa0-9d0c-1f33d5de46f2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:39.917Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('8acda385-052e-42aa-8eb3-5bb39e851cb9')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:16:28.778Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('14dabe82-c194-4fc9-bd7b-0de825e7ac01')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 5,
+      ts: ISODate('2025-03-14T17:16:29.202Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('16c269fb-efef-4a3a-a717-1050decae622')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 94,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 1,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 1,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:16:30.112Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('73bba90a-0fc6-4e7f-859c-4e4ec3b9ddb0')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 137,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:16:30.582Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('7d51d429-9c6a-4faa-a614-98dac092422e')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:16:30.586Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('7d51d429-9c6a-4faa-a614-98dac092422e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:16:30.588Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('345f76e6-f2f2-4e84-a664-877660b4ac4e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:18:57.153Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('ca076084-3d39-4919-afe0-388b33d7bb5e')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 3,
+      ts: ISODate('2025-03-14T17:18:57.755Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('1c122766-4f58-44a7-a315-abaf42ea8c32')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 44,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:18:58.743Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('3a640b35-1d71-4132-a5c4-fb95e8b1ac29')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 119,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 0,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 0,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:18:59.215Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('f4ffa561-9695-4a67-92c6-e5f0a02b581d')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:18:59.220Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('f4ffa561-9695-4a67-92c6-e5f0a02b581d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:18:59.225Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('691c6f23-2bcf-427a-bf2f-413b5e631207')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:20:53.036Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        collStats: 'registrations',
+        lsid: {
+          id: UUID('d2d884b2-b546-4489-949d-8dd73a1e2d61')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68364,
+      protocol: 'op_msg',
+      millis: 5,
+      ts: ISODate('2025-03-14T17:20:53.504Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('155d4a2b-170e-4818-a982-9638e6795cbc')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 225,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 119,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:20:54.506Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.registrations',
+      command: {
+        find: 'registrations',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('7461f3dc-9ee9-4660-be1a-9f99216a7716')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 10,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 10,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 3396,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 562,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 10,
+        executionTimeMillisEstimate: 1,
+        works: 11,
+        advanced: 10,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 10,
+          executionTimeMillisEstimate: 1,
+          works: 11,
+          advanced: 10,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 10
+        }
+      },
+      ts: ISODate('2025-03-14T17:20:55.167Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        listIndexes: 'registrations',
+        cursor: {},
+        lsid: {
+          id: UUID('7461f3dc-9ee9-4660-be1a-9f99216a7716')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 442,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:20:55.171Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.registrations',
+      command: {
+        count: 'registrations',
+        lsid: {
+          id: UUID('7461f3dc-9ee9-4660-be1a-9f99216a7716')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 10,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:20:55.173Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    }
+  ]
+}

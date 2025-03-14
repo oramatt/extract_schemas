@@ -1,0 +1,26 @@
+{
+  "schema": {
+    "_id": [
+      "ObjectId"
+    ],
+    "business_id": [
+      "string"
+    ],
+    "date": [
+      "string"
+    ]
+  },
+  "indexes": [
+    {
+      "v": 2,
+      "key": {
+        "_id": 1
+      },
+      "name": "_id_"
+    }
+  ],
+  "metadata": {
+    "sampleSize": 1,
+    "totalDocuments": 1
+  }
+}

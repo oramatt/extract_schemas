@@ -1,0 +1,95 @@
+[2025-03-14 13:20:51] [INFO] Testing connection to MongoDB at localhost:23456...
+[2025-03-14 13:20:52] [INFO] Connected to MongoDB version 8.0.1 at localhost:23456
+[2025-03-14 13:20:52] [INFO] Starting metadata extraction
+[2025-03-14 13:20:52] [INFO] Output directory: mongodb_metadata
+[2025-03-14 13:20:52] [INFO] Log file: mongodb_metadata/extract_20250314_132051.log
+[2025-03-14 13:20:52] [INFO] --------------------------------------------
+[2025-03-14 13:20:52] [INFO] Extracting metadata for database: test
+[2025-03-14 13:20:52] [INFO] Found 4 collections in database test
+[2025-03-14 13:20:52] [INFO] Skipping system collection: system.profile
+[2025-03-14 13:20:53] [INFO] Successfully extracted document count
+[2025-03-14 13:20:53] [INFO] Successfully extracted document count
+[2025-03-14 13:20:53] [INFO] Successfully extracted document count
+[2025-03-14 13:20:53] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:53] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:53] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:54] [INFO] Successfully extracted system information
+[2025-03-14 13:20:54] [INFO] Successfully extracted system information
+[2025-03-14 13:20:54] [INFO] Successfully extracted system information
+[2025-03-14 13:20:54] [INFO] Successfully extracted sample document for test.bruh
+[2025-03-14 13:20:54] [INFO] Successfully extracted sample document for test.noduh
+[2025-03-14 13:20:54] [INFO] Successfully extracted sample document for test.registrations
+[2025-03-14 13:20:54] [INFO] Extracting schema and indexes for test.noduh...
+[2025-03-14 13:20:54] [INFO] Extracting schema and indexes for test.bruh...
+[2025-03-14 13:20:54] [INFO] Extracting schema and indexes for test.registrations...
+[2025-03-14 13:20:55] [INFO] Successfully extracted schema for test.registrations
+[2025-03-14 13:20:55] [INFO] Successfully extracted schema for test.bruh
+[2025-03-14 13:20:55] [INFO] Successfully extracted schema for test.noduh
+[2025-03-14 13:20:56] [INFO] Successfully extracted workload profile for test.bruh
+[2025-03-14 13:20:56] [INFO] Successfully extracted workload profile for test.registrations
+[2025-03-14 13:20:56] [INFO] Successfully extracted workload profile for test.noduh
+[2025-03-14 13:20:56] [INFO] Successfully extracted users and roles
+[2025-03-14 13:20:56] [INFO] Successfully extracted users and roles
+[2025-03-14 13:20:56] [INFO] Completed metadata extraction for test.registrations (complete)
+[2025-03-14 13:20:56] [INFO] Completed metadata extraction for test.bruh (complete)
+[2025-03-14 13:20:56] [INFO] Successfully extracted users and roles
+[2025-03-14 13:20:56] [INFO] Completed metadata extraction for test.noduh (complete)
+[2025-03-14 13:20:56] [INFO] Metadata extraction complete for database: test
+[2025-03-14 13:20:56] [INFO] Saved in folder: mongodb_metadata/test
+[2025-03-14 13:20:56] [INFO] --------------------------------------------
+[2025-03-14 13:20:56] [INFO] Extracting metadata for database: foodie
+[2025-03-14 13:20:57] [INFO] Found 5 collections in database foodie
+[2025-03-14 13:20:57] [INFO] Successfully extracted document count
+[2025-03-14 13:20:57] [INFO] Successfully extracted document count
+[2025-03-14 13:20:57] [INFO] Successfully extracted document count
+[2025-03-14 13:20:57] [INFO] Successfully extracted document count
+[2025-03-14 13:20:57] [INFO] Successfully extracted document count
+[2025-03-14 13:20:58] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:58] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:58] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:58] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:58] [INFO] Successfully extracted storage statistics
+[2025-03-14 13:20:58] [INFO] Successfully extracted system information
+[2025-03-14 13:20:58] [INFO] Successfully extracted system information
+[2025-03-14 13:20:58] [INFO] Successfully extracted system information
+[2025-03-14 13:20:58] [INFO] Successfully extracted system information
+[2025-03-14 13:20:58] [INFO] Successfully extracted system information
+[2025-03-14 13:20:59] [INFO] Successfully extracted sample document for foodie.23765
+[2025-03-14 13:20:59] [INFO] Successfully extracted sample document for foodie.28104
+[2025-03-14 13:20:59] [INFO] Successfully extracted sample document for foodie.15990
+[2025-03-14 13:20:59] [INFO] Extracting schema and indexes for foodie.23765...
+[2025-03-14 13:20:59] [INFO] Extracting schema and indexes for foodie.28104...
+[2025-03-14 13:20:59] [INFO] Extracting schema and indexes for foodie.15990...
+[2025-03-14 13:20:59] [INFO] Successfully extracted sample document for foodie.9768
+[2025-03-14 13:20:59] [INFO] Extracting schema and indexes for foodie.9768...
+[2025-03-14 13:20:59] [INFO] Successfully extracted sample document for foodie.12970
+[2025-03-14 13:20:59] [INFO] Extracting schema and indexes for foodie.12970...
+[2025-03-14 13:20:59] [INFO] Successfully extracted schema for foodie.15990
+[2025-03-14 13:21:00] [INFO] Successfully extracted schema for foodie.28104
+[2025-03-14 13:21:00] [INFO] Successfully extracted schema for foodie.9768
+[2025-03-14 13:21:00] [INFO] Successfully extracted schema for foodie.23765
+[2025-03-14 13:21:00] [INFO] Successfully extracted schema for foodie.12970
+[2025-03-14 13:21:01] [INFO] Successfully extracted workload profile for foodie.9768
+[2025-03-14 13:21:01] [INFO] Successfully extracted workload profile for foodie.23765
+[2025-03-14 13:21:01] [INFO] Successfully extracted workload profile for foodie.12970
+[2025-03-14 13:21:01] [INFO] Successfully extracted workload profile for foodie.28104
+[2025-03-14 13:21:01] [INFO] Successfully extracted workload profile for foodie.15990
+[2025-03-14 13:21:01] [INFO] Successfully extracted users and roles
+[2025-03-14 13:21:01] [INFO] Successfully extracted users and roles
+[2025-03-14 13:21:01] [INFO] Successfully extracted users and roles
+[2025-03-14 13:21:01] [INFO] Successfully extracted users and roles
+[2025-03-14 13:21:01] [INFO] Completed metadata extraction for foodie.23765 (complete)
+[2025-03-14 13:21:01] [INFO] Completed metadata extraction for foodie.28104 (complete)
+[2025-03-14 13:21:01] [INFO] Completed metadata extraction for foodie.12970 (complete)
+[2025-03-14 13:21:01] [INFO] Completed metadata extraction for foodie.9768 (complete)
+[2025-03-14 13:21:01] [INFO] Successfully extracted users and roles
+[2025-03-14 13:21:01] [INFO] Completed metadata extraction for foodie.15990 (complete)
+[2025-03-14 13:21:01] [INFO] Metadata extraction complete for database: foodie
+[2025-03-14 13:21:01] [INFO] Saved in folder: mongodb_metadata/foodie
+[2025-03-14 13:21:01] [INFO] ======================================================
+[2025-03-14 13:21:01] [INFO] Metadata extraction completed!
+[2025-03-14 13:21:01] [INFO] Processed 8 collections across 2 databases
+[2025-03-14 13:21:01] [INFO] Total duration: 0h 0m 9s
+[2025-03-14 13:21:01] [INFO] Output directory: mongodb_metadata
+[2025-03-14 13:21:01] [INFO] Log file: mongodb_metadata/extract_20250314_132051.log
+[2025-03-14 13:21:01] [INFO] ======================================================

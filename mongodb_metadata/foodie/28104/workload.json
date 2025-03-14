@@ -1,0 +1,5 @@
+{
+  source: 'in-memory_logs',
+  totalLines: 40160,
+  commandEntries: 'No matching COMMAND logs found'
+}

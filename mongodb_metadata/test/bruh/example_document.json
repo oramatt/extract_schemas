@@ -1,0 +1,10 @@
+{
+  "sample_document": {
+    "_id": "67d453e7d343eca32ed68266",
+    "name": "Matt DeMarco",
+    "email": "matthew.demarco@oracle.com",
+    "notes": "🦄",
+    "image": null,
+    "__v": 0
+  }
+}

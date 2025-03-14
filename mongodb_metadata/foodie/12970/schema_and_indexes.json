@@ -1,0 +1,65 @@
+{
+  "schema": {
+    "_id": [
+      "ObjectId"
+    ],
+    "business_id": [
+      "string"
+    ],
+    "name": [
+      "string"
+    ],
+    "address": [
+      "string"
+    ],
+    "city": [
+      "string"
+    ],
+    "state": [
+      "string"
+    ],
+    "postal_code": [
+      "string"
+    ],
+    "latitude": [
+      "double"
+    ],
+    "longitude": [
+      "double"
+    ],
+    "stars": [
+      "int"
+    ],
+    "review_count": [
+      "int"
+    ],
+    "is_open": [
+      "int"
+    ],
+    "attributes": [
+      "object"
+    ],
+    "attributes.ByAppointmentOnly": [
+      "string"
+    ],
+    "categories": [
+      "string"
+    ],
+    "hours": [
+      "null"
+    ]
+  },
+  "indexes": [
+    {
+      "v": 2,
+      "key": {
+        "_id": 1
+      },
+      "name": "_id_"
+    }
+  ],
+  "metadata": {
+    "sampleSize": 1,
+    "totalDocuments": 1
+  }
+}

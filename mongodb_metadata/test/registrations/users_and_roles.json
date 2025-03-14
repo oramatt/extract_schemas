@@ -1,0 +1,57 @@
+{
+  "users": {
+    "users": [
+      {
+        "_id": "test.bebop",
+        "userId": "efde42bf-0aa4-4ec5-b8f0-46cf64bc85ff",
+        "user": "bebop",
+        "db": "test",
+        "customData": {},
+        "roles": [
+          {
+            "role": "readWrite",
+            "db": "test"
+          }
+        ],
+        "mechanisms": [
+          "SCRAM-SHA-1",
+          "SCRAM-SHA-256"
+        ]
+      },
+      {
+        "_id": "test.matt",
+        "userId": "0c399e29-cf2f-4efc-8cf1-dd40d6c0d100",
+        "user": "matt",
+        "db": "test",
+        "customData": {},
+        "roles": [
+          {
+            "role": "readWrite",
+            "db": "test"
+          },
+          {
+            "role": "dbAdmin",
+            "db": "test"
+          },
+          {
+            "role": "dbOwner",
+            "db": "test"
+          },
+          {
+            "role": "userAdmin",
+            "db": "test"
+          }
+        ],
+        "mechanisms": [
+          "SCRAM-SHA-1",
+          "SCRAM-SHA-256"
+        ]
+      }
+    ],
+    "ok": 1
+  },
+  "roles": {
+    "roles": [],
+    "ok": 1
+  }
+}

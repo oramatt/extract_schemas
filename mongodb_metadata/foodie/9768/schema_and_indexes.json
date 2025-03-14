@@ -1,0 +1,47 @@
+{
+  "schema": {
+    "_id": [
+      "ObjectId"
+    ],
+    "review_id": [
+      "string"
+    ],
+    "user_id": [
+      "string"
+    ],
+    "business_id": [
+      "string"
+    ],
+    "stars": [
+      "int"
+    ],
+    "useful": [
+      "int"
+    ],
+    "funny": [
+      "int"
+    ],
+    "cool": [
+      "int"
+    ],
+    "text": [
+      "string"
+    ],
+    "date": [
+      "string"
+    ]
+  },
+  "indexes": [
+    {
+      "v": 2,
+      "key": {
+        "_id": 1
+      },
+      "name": "_id_"
+    }
+  ],
+  "metadata": {
+    "sampleSize": 1,
+    "totalDocuments": 1
+  }
+}

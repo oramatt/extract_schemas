@@ -1,0 +1,6391 @@
+{
+  source: 'database_profiler',
+  database: 'test',
+  collection: 'bruh',
+  profilerEntries: [
+    {
+      op: 'insert',
+      ns: 'test.bruh',
+      command: {
+        insert: 'bruh',
+        ordered: true,
+        lsid: {
+          id: UUID('ec58b93b-9451-4e59-9db3-34d9686ac1a1')
+        },
+        '$db': 'test'
+      },
+      ninserted: 1,
+      keysInserted: 1,
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('3')
+      },
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 28,
+      ts: ISODate('2025-03-14T16:05:16.022Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        createIndexes: 'bruh',
+        indexes: [
+          {
+            name: 'email_text',
+            weights: {
+              email: 1
+            },
+            default_language: 'english',
+            language_override: 'language',
+            textIndexVersion: 3,
+            key: {
+              _fts: 'text',
+              _ftsx: 1
+            }
+          }
+        ],
+        lsid: {
+          id: UUID('ec58b93b-9451-4e59-9db3-34d9686ac1a1')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1'),
+            W: Long('1')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('3')
+      },
+      responseLength: 114,
+      protocol: 'op_msg',
+      millis: 32,
+      ts: ISODate('2025-03-14T16:05:16.058Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        createIndexes: 'bruh',
+        indexes: [
+          {
+            name: 'geoIndex',
+            '2dsphereIndexVersion': 3,
+            key: {
+              'location.coordinates': '2dsphere'
+            }
+          }
+        ],
+        lsid: {
+          id: UUID('ec58b93b-9451-4e59-9db3-34d9686ac1a1')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1'),
+            W: Long('1')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('3')
+      },
+      responseLength: 114,
+      protocol: 'op_msg',
+      millis: 24,
+      ts: ISODate('2025-03-14T16:05:16.083Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('ec58b93b-9451-4e59-9db3-34d9686ac1a1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 122,
+      protocol: 'op_msg',
+      millis: 5,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 2476,
+      ts: ISODate('2025-03-14T16:05:16.090Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$collStats': {
+              storageStats: {}
+            }
+          },
+          {
+            '$group': {
+              _id: null,
+              capped: {
+                '$first': '$storageStats.capped'
+              },
+              count: {
+                '$sum': '$storageStats.count'
+              },
+              size: {
+                '$sum': {
+                  '$toDouble': '$storageStats.size'
+                }
+              },
+              storageSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.storageSize'
+                }
+              },
+              totalIndexSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.totalIndexSize'
+                }
+              },
+              freeStorageSize: {
+                '$sum': {
+                  '$toDouble': '$storageStats.freeStorageSize'
+                }
+              },
+              unscaledCollSize: {
+                '$sum': {
+                  '$multiply': [
+                    {
+                      '$toDouble': '$storageStats.avgObjSize'
+                    },
+                    {
+                      '$toDouble': '$storageStats.count'
+                    }
+                  ]
+                }
+              },
+              nindexes: {
+                '$max': '$storageStats.nindexes'
+              }
+            }
+          },
+          {
+            '$addFields': {
+              avgObjSize: {
+                '$cond': {
+                  if: {
+                    '$ne': [
+                      '$count',
+                      0
+                    ]
+                  },
+                  then: {
+                    '$divide': [
+                      '$unscaledCollSize',
+                      {
+                        '$toDouble': '$count'
+                      }
+                    ]
+                  },
+                  else: 0
+                }
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('c312860f-f826-419d-8ecc-4850b1d3be37')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 275,
+      protocol: 'op_msg',
+      millis: 12,
+      ts: ISODate('2025-03-14T16:05:29.791Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$listSearchIndexes': {}
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('c312860f-f826-419d-8ecc-4850b1d3be37')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      ok: 0,
+      errMsg: 'Using Atlas Search Database Commands and the $listSearchIndexes aggregation stage requires additional configuration. Please connect to Atlas or an AtlasCLI local deployment to enable. For more information on how to connect, see https://dochub.mongodb.org/core/atlas-cli-deploy-local-reqs.',
+      errName: 'SearchNotEnabled',
+      errCode: 31082,
+      responseLength: 380,
+      protocol: 'op_msg',
+      millis: 2,
+      ts: ISODate('2025-03-14T16:05:29.797Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('ba52263c-ce60-4e77-b5e4-bafa76d996b0')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:05:29.869Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$limit': 10
+          }
+        ],
+        cursor: {},
+        maxTimeMS: 60000,
+        lsid: {
+          id: UUID('6dee449c-4f3e-4034-8578-0d8f41354fd3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 71,
+      ts: ISODate('2025-03-14T16:05:29.870Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$indexStats': {}
+          },
+          {
+            '$project': {
+              name: 1,
+              usageHost: '$host',
+              usageCount: '$accesses.ops',
+              usageSince: '$accesses.since'
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('84e4f9e2-1b1c-474a-b788-c805d5db9123')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 3,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 399,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:05:29.870Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$count': 'count'
+          }
+        ],
+        hint: '_id_',
+        cursor: {},
+        maxTimeMS: 5000,
+        lsid: {
+          id: UUID('c312860f-f826-419d-8ecc-4850b1d3be37')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 1,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 117,
+      protocol: 'op_msg',
+      millis: 4,
+      planSummary: 'COUNT_SCAN { _id: 1 }',
+      planningTimeMicros: 3441,
+      ts: ISODate('2025-03-14T16:05:29.874Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$collStats': {
+              storageStats: {}
+            }
+          },
+          {
+            '$project': {
+              indexSizes: {
+                '$objectToArray': '$storageStats.indexSizes'
+              }
+            }
+          },
+          {
+            '$unwind': '$indexSizes'
+          },
+          {
+            '$group': {
+              _id: '$indexSizes.k',
+              size: {
+                '$sum': {
+                  '$toDouble': '$indexSizes.v'
+                }
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('90012bfd-7d38-4e96-834d-452192e42b35')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 3,
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('2')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 7,
+      ts: ISODate('2025-03-14T16:05:29.877Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        projection: {
+          _id: 0,
+          __doc: '$$ROOT',
+          __size: {
+            '$bsonSize': '$$ROOT'
+          }
+        },
+        skip: 0,
+        limit: 100,
+        maxTimeMS: 60000,
+        lsid: {
+          id: UUID('bfd78752-797c-47ab-82b8-df52ac6e0f28')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 240,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 188,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 100,
+        inputStage: {
+          stage: 'PROJECTION_DEFAULT',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          transformBy: {},
+          inputStage: {
+            stage: 'COLLSCAN',
+            nReturned: 1,
+            executionTimeMillisEstimate: 0,
+            works: 2,
+            advanced: 1,
+            needTime: 0,
+            needYield: 0,
+            saveState: 0,
+            restoreState: 0,
+            isEOF: 1,
+            direction: 'forward',
+            docsExamined: 1
+          }
+        }
+      },
+      ts: ISODate('2025-03-14T16:05:29.895Z'),
+      client: '127.0.0.1',
+      appName: 'MongoDB Compass',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        drop: 'bruh',
+        lsid: {
+          id: UUID('ab7a395e-5cd3-4722-af17-bce31fbb6f8c')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1'),
+            W: Long('1')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('2')
+      },
+      responseLength: 73,
+      protocol: 'op_msg',
+      millis: 1,
+      ts: ISODate('2025-03-14T16:05:59.225Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'insert',
+      ns: 'test.bruh',
+      command: {
+        insert: 'bruh',
+        ordered: true,
+        lsid: {
+          id: UUID('ab7a395e-5cd3-4722-af17-bce31fbb6f8c')
+        },
+        '$db': 'test'
+      },
+      ninserted: 1,
+      keysInserted: 1,
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('3')
+      },
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 24,
+      ts: ISODate('2025-03-14T16:05:59.250Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        createIndexes: 'bruh',
+        indexes: [
+          {
+            name: 'email_text',
+            weights: {
+              email: 1
+            },
+            default_language: 'english',
+            language_override: 'language',
+            textIndexVersion: 3,
+            key: {
+              _fts: 'text',
+              _ftsx: 1
+            }
+          }
+        ],
+        lsid: {
+          id: UUID('ab7a395e-5cd3-4722-af17-bce31fbb6f8c')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1'),
+            W: Long('1')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('3')
+      },
+      responseLength: 114,
+      protocol: 'op_msg',
+      millis: 18,
+      ts: ISODate('2025-03-14T16:05:59.270Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        createIndexes: 'bruh',
+        indexes: [
+          {
+            name: 'geoIndex',
+            '2dsphereIndexVersion': 3,
+            key: {
+              'location.coordinates': '2dsphere'
+            }
+          }
+        ],
+        lsid: {
+          id: UUID('ab7a395e-5cd3-4722-af17-bce31fbb6f8c')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        ReplicationStateTransition: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Global: {
+          acquireCount: {
+            w: Long('3')
+          }
+        },
+        Database: {
+          acquireCount: {
+            w: Long('2')
+          }
+        },
+        Collection: {
+          acquireCount: {
+            w: Long('1'),
+            W: Long('1')
+          }
+        },
+        Mutex: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {
+        acquireCount: Long('3')
+      },
+      responseLength: 114,
+      protocol: 'op_msg',
+      millis: 18,
+      ts: ISODate('2025-03-14T16:05:59.289Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        aggregate: 'bruh',
+        pipeline: [
+          {
+            '$match': {}
+          },
+          {
+            '$group': {
+              _id: 1,
+              n: {
+                '$sum': 1
+              }
+            }
+          }
+        ],
+        cursor: {},
+        lsid: {
+          id: UUID('ab7a395e-5cd3-4722-af17-bce31fbb6f8c')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: 'B3956D95',
+      planCacheKey: 'E66D7B71',
+      queryFramework: 'sbe',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 122,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 274,
+      ts: ISODate('2025-03-14T16:05:59.290Z'),
+      client: '127.0.0.1',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('d654fdf6-f3e5-4573-9c51-352a28ff50fa')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:10:30.700Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('af82695d-2cdd-435f-a471-a5117d2411c1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 40,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:10:30.815Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('a98a8a50-9b98-4a58-8490-d9e6cbe1b9a4')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 11,
+      ts: ISODate('2025-03-14T16:10:30.815Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('af82695d-2cdd-435f-a471-a5117d2411c1')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:10:30.823Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('7b9c5e44-2904-42fe-8c0e-2d828f37ab45')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 751,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:10:30.839Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('af82695d-2cdd-435f-a471-a5117d2411c1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:10:30.842Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('8f774ae0-3b69-47ab-9221-cdd649a13fd3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:20:33.625Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('3e07bbe5-5528-4ae3-bb12-b92881469733')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 3,
+      ts: ISODate('2025-03-14T16:20:33.626Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('d567f064-b274-486a-894e-f4d8bef7682c')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 255,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:20:33.913Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('c5672fe7-91bd-41ee-8f14-ed22129feb82')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 36,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:20:33.925Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('f3e896f1-c0dd-4bed-aca9-f5854361f7f2')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:20:33.931Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('f3e896f1-c0dd-4bed-aca9-f5854361f7f2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:20:33.989Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('9be5e3b8-c928-4b10-80dd-0f2ab58112bd')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 54,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:24:26.710Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('f2f781b8-4029-4228-93ed-265c5073d27e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 67,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:24:26.814Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('f2f781b8-4029-4228-93ed-265c5073d27e')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:24:26.818Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('f2f781b8-4029-4228-93ed-265c5073d27e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:24:26.819Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('a237cdc9-5ac5-498c-997a-bb3f1c4267a8')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68351,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:24:26.824Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('70aed130-f2e0-4ab9-aa62-939be80458a7')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:24:26.825Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('ea3ec7d7-a492-4b07-8709-e6aaf2162608')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 59,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:03.647Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('83cbad4b-5137-4811-90f9-3ae0a7a7fb28')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:03.652Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('6239f3d9-b727-4548-ab5c-a0fa1b95547c')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 12,
+      ts: ISODate('2025-03-14T16:45:03.689Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('8e858608-f1ed-4cec-bd45-9d7041868208')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 54,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:03.693Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('8e858608-f1ed-4cec-bd45-9d7041868208')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:45:03.705Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('9767bb6b-6863-4003-87f5-2d692f2862e4')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:03.728Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('a7b5cacd-7645-4679-9aa7-9c2603be16c3')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 65,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:26.313Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('98a61fd9-90c8-4fa0-ae7f-5c7d40630c20')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:26.316Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('9190cc6f-36a8-4cea-9d38-f9902a3f18f3')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 3,
+      ts: ISODate('2025-03-14T16:45:26.332Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('4a0bfdfe-b5f1-4e0f-a073-80607e1e0c62')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 32,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:45:26.385Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('594738d8-e682-49b8-93f0-0e45cb1914fd')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:45:26.413Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('594738d8-e682-49b8-93f0-0e45cb1914fd')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:45:26.422Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('3480ab46-03d8-4c45-bf2a-78c886fbf65a')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:46:33.955Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('106cf127-c4b1-442c-8b0b-b52163dc4851')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:46:34.420Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('b2e2ed66-5e18-40e0-a940-46972fec4ac5')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 81,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:46:35.437Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('5611c147-911d-480b-9851-c07bc5e75859')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 84,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:46:35.928Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('9b2563b4-5dcc-4bdb-b510-eb39c4e8d826')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:46:35.931Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('9b2563b4-5dcc-4bdb-b510-eb39c4e8d826')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:46:35.933Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('f225783d-6745-4a45-bc28-6230b9e55536')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:51:51.991Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('dbe8161e-20f6-4e2b-9828-51cdd5a28deb')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:51:52.529Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('6bed7758-f8be-4119-a42c-214ba8995856')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 120,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:51:53.514Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('8ebd7ca7-5904-4e92-bc78-dee2b4326d3d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 40,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:51:54.112Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('8ebd7ca7-5904-4e92-bc78-dee2b4326d3d')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:51:54.115Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('8ebd7ca7-5904-4e92-bc78-dee2b4326d3d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:51:54.116Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('12c5dbb3-a1cb-48f8-a63d-154b700f13e6')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:55:44.665Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('65d16762-71ac-4b5e-8039-61a760f0b900')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T16:55:45.125Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('6cfeac53-df0c-4175-a274-3c11a2742442')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 89,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:55:46.133Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('64042da9-b304-4e4e-b29f-c2088bb724c7')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 128,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:55:46.648Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('f32eaae9-a6b4-4255-abbf-f56cc6ab0bd3')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:55:46.651Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('64042da9-b304-4e4e-b29f-c2088bb724c7')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:55:46.654Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('efadd300-4d4a-4a23-acf1-46f790a0dac4')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:58:40.028Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('9db4b394-5fe9-46cf-9948-913b358c30bc')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 6,
+      ts: ISODate('2025-03-14T16:58:40.468Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('aac361eb-a651-4cd1-9c49-a1898babe865')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 126,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:58:41.353Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('212dd542-7e78-41fc-ac21-2185aaec1c39')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 138,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:58:41.940Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('212dd542-7e78-41fc-ac21-2185aaec1c39')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:58:41.951Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('212dd542-7e78-41fc-ac21-2185aaec1c39')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:58:41.952Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('7f073676-7cc1-4a6e-b2a2-8d18bfabdfbf')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:59:38.361Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('a1a15cfb-398c-413b-a331-d9e6b24ba25f')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68351,
+      protocol: 'op_msg',
+      millis: 5,
+      ts: ISODate('2025-03-14T16:59:38.824Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('695c4b79-c1f8-4666-87b9-27a01cb144cc')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 178,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:59:39.773Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('d5dd77e6-1e96-46e5-848a-b1f92312317e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 137,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T16:59:40.208Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('d5dd77e6-1e96-46e5-848a-b1f92312317e')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T16:59:40.211Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('d5dd77e6-1e96-46e5-848a-b1f92312317e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T16:59:40.212Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('9ad10ef1-34b6-403c-b2cd-e7621821c6d2')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:00:36.837Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('93388927-51fd-43fb-bc32-151bdda717bc')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T17:00:37.272Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('0a2ab022-0500-465f-8b62-9449d2fb2a20')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 122,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:00:38.206Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('6dcfd9d2-bc19-4617-9bd2-9b225af6ffe1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 57,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:00:38.721Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('88757580-f985-474b-b303-b826d8288f72')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:00:38.724Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('6dcfd9d2-bc19-4617-9bd2-9b225af6ffe1')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:00:38.727Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('b5f624e3-920b-42d6-b24f-f17324678b7b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:02:13.835Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('70468c7d-47a8-4473-8bf1-80043642ad87')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 5,
+      ts: ISODate('2025-03-14T17:02:14.294Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('2e3a80a4-8f8b-4fb6-9365-fc87fc1a43ac')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 54,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:02:15.209Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('8cfcb52f-8cdd-4d23-8515-0b11e3be6402')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 36,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:02:15.727Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('7526d3a5-7551-42ce-89d1-31a7d4dac6ac')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:02:15.729Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('8cfcb52f-8cdd-4d23-8515-0b11e3be6402')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:02:15.732Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('4dfca5ec-b6b5-450a-927d-50f1c65d13f0')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:03.797Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('04573a97-368b-4a14-b08b-23b551fc1ad2')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T17:03:04.248Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('8de49066-86de-477b-976c-36ba48fe92ba')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 110,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:05.184Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('09d70fcb-fe63-4427-b4fc-c285992cca3e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 96,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:05.635Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('09d70fcb-fe63-4427-b4fc-c285992cca3e')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:03:05.639Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('09d70fcb-fe63-4427-b4fc-c285992cca3e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:05.640Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('11bf61d5-f589-4f7c-beff-723c044ceebb')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:32.593Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('e942248e-da31-4da6-a96c-6dce3cdf3f86')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 6,
+      ts: ISODate('2025-03-14T17:03:33.044Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('b613e474-5be7-45fa-b62d-b51c7061e804')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 77,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:33.995Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('8f9b8082-f49b-479e-a417-9c8c2fa90a84')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 104,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:03:34.490Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('8f9b8082-f49b-479e-a417-9c8c2fa90a84')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:03:34.493Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('8f9b8082-f49b-479e-a417-9c8c2fa90a84')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:03:34.494Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('cd251290-8e46-418c-be5a-691c3afd6b3e')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:06.003Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('cb997c3d-334a-4c51-9c55-6df0d01bf9f2')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68351,
+      protocol: 'op_msg',
+      millis: 7,
+      ts: ISODate('2025-03-14T17:04:06.489Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('9383674b-7a41-4fe7-90e2-373aa2fc2a84')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 105,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:07.387Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('fe44478b-079c-4023-aaaa-4c4e7da705df')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 167,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:07.872Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('fe44478b-079c-4023-aaaa-4c4e7da705df')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:04:07.875Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('fe44478b-079c-4023-aaaa-4c4e7da705df')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:07.876Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('7e867196-1e65-4d19-82e9-7d9fb1fbc18d')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:38.053Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('f289c1f6-f23b-4c84-b1df-72e2f983fee5')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68351,
+      protocol: 'op_msg',
+      millis: 6,
+      ts: ISODate('2025-03-14T17:04:38.506Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('6fb00dc8-b5fd-462d-80ca-34fbea50604b')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 63,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:39.456Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('24c1ab3a-fc71-4659-a1ad-b56ecc0f7c61')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 112,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:04:39.911Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('42d8b502-926d-4953-b162-1a3995f62b6a')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:04:39.914Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('24c1ab3a-fc71-4659-a1ad-b56ecc0f7c61')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:04:39.917Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('ad2358a4-4e78-49f0-adbc-86848f6e2a79')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:16:28.779Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('135f556b-c328-4dbb-a475-4fb8b73d8397')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 4,
+      ts: ISODate('2025-03-14T17:16:29.203Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('fa6457dc-d489-40e2-88a7-f48c5140e239')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 1,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 961,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:16:30.160Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('7c44e21b-950c-4280-9938-c79638d5433f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 93,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:16:30.623Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('7c44e21b-950c-4280-9938-c79638d5433f')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:16:30.638Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('7c44e21b-950c-4280-9938-c79638d5433f')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:16:30.640Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('8577e0bc-838e-43e2-a969-48de30535d69')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:18:57.154Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('747aedd3-ab99-4d3d-b336-ea3e2768653c')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68351,
+      protocol: 'op_msg',
+      millis: 3,
+      ts: ISODate('2025-03-14T17:18:57.750Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('fd9f3088-b4d6-4732-b5ea-5cd1c098b2eb')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 189,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:18:58.789Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('8c24b76b-85fd-408d-b2d9-d6c837403cfb')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 386,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:18:59.299Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('d6542abc-98cf-4a7d-9c32-93b617a5bbc9')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:18:59.302Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('d6542abc-98cf-4a7d-9c32-93b617a5bbc9')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:18:59.305Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('54fc2f1d-74e1-46ee-96f5-8d7db1124437')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:20:53.035Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        collStats: 'bruh',
+        lsid: {
+          id: UUID('26698b91-4229-49f9-9604-56e6974b6049')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 68355,
+      protocol: 'op_msg',
+      millis: 6,
+      ts: ISODate('2025-03-14T17:20:53.505Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 1,
+        lsid: {
+          id: UUID('048dff9c-a6be-4bdc-af7b-2da64dfaac34')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 305,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 1,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 1,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 0,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:20:54.496Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'query',
+      ns: 'test.bruh',
+      command: {
+        find: 'bruh',
+        filter: {},
+        limit: 300,
+        lsid: {
+          id: UUID('b3ef907c-83b8-40e4-b144-dd41b8908c86')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 1,
+      nBatches: 1,
+      cursorExhausted: true,
+      numYield: 0,
+      nreturned: 1,
+      queryHash: '8F2383EE',
+      planCacheKey: '7DF350EE',
+      queryFramework: 'classic',
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 216,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'COLLSCAN',
+      planningTimeMicros: 75,
+      execStats: {
+        isCached: false,
+        stage: 'LIMIT',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        limitAmount: 300,
+        inputStage: {
+          stage: 'COLLSCAN',
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          works: 2,
+          advanced: 1,
+          needTime: 0,
+          needYield: 0,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          direction: 'forward',
+          docsExamined: 1
+        }
+      },
+      ts: ISODate('2025-03-14T17:20:55.168Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        listIndexes: 'bruh',
+        cursor: {},
+        lsid: {
+          id: UUID('b3ef907c-83b8-40e4-b144-dd41b8908c86')
+        },
+        '$db': 'test'
+      },
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 433,
+      protocol: 'op_msg',
+      millis: 0,
+      ts: ISODate('2025-03-14T17:20:55.172Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    },
+    {
+      op: 'command',
+      ns: 'test.bruh',
+      command: {
+        count: 'bruh',
+        lsid: {
+          id: UUID('b3ef907c-83b8-40e4-b144-dd41b8908c86')
+        },
+        '$db': 'test'
+      },
+      keysExamined: 0,
+      docsExamined: 0,
+      numYield: 0,
+      locks: {
+        Global: {
+          acquireCount: {
+            r: Long('1')
+          }
+        }
+      },
+      flowControl: {},
+      responseLength: 45,
+      protocol: 'op_msg',
+      millis: 0,
+      planSummary: 'RECORD_STORE_FAST_COUNT',
+      execStats: {
+        isCached: false,
+        stage: 'RECORD_STORE_FAST_COUNT',
+        nReturned: 0,
+        executionTimeMillisEstimate: 0,
+        works: 1,
+        advanced: 0,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        nCounted: 1,
+        nSkipped: 0
+      },
+      ts: ISODate('2025-03-14T17:20:55.173Z'),
+      client: '127.0.0.1',
+      appName: 'mongosh 2.3.8',
+      allUsers: [],
+      user: ''
+    }
+  ]
+}

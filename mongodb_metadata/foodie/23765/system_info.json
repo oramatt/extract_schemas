@@ -1,0 +1,20 @@
+{
+  "mongodb_version": "8.0.1",
+  "uptime_seconds": 190954,
+  "cpu": {
+    "user": "N/A",
+    "system": "N/A"
+  },
+  "memory": {
+    "resident_MB": 82,
+    "virtual_MB": 408586
+  },
+  "disk": {
+    "read_per_sec": "N/A",
+    "write_per_sec": "N/A"
+  },
+  "network": {
+    "bytes_in": 1296730441,
+    "bytes_out": -523400593
+  }
+}
