@@ -25,7 +25,7 @@ PARALLEL_LIMIT=4  # Maximum number of parallel jobs
 USERNAME=""  # MongoDB username (if needed)
 PASSWORD=""  # MongoDB password (if needed)
 AUTH_DB=""   # Authentication database (e.g., "admin", if needed)
-USE_TLS="false"  # Set to "true" to enable TLS/SSL
+USE_TLS="false"  # Set to "true" to enable TLS/SSL, needs work to completely enable
 
 # ==========================================
 # Setup area
