@@ -17,7 +17,7 @@
 # MongoDB connection details
 MONGO_HOST="localhost"
 MONGO_PORT="23456"
-DATABASES=("test" "moredata")  # Space delimited list of databases to scan
+DATABASES=("test" "tweetme" "emptyonpurpose")  # Space delimited list of databases to scan
 OUTPUT_DIR="mongodb_metadata"  # Base directory for output
 PARALLEL_LIMIT=4  # Maximum number of parallel jobs
 
@@ -100,7 +100,10 @@ extract_document_count() {
     # Handle empty output
     if [[ ! -s "$output_file" ]]; then
         echo "{\"document_count\": 0, \"error\": \"Failed to extract count\"}" > "$output_file"
+        log_error "Failed to extract document count for $db_name.$coll_name"
         return 1
+    else
+        log_info "Successfully extracted document count"
     fi
     
     return 0
@@ -120,7 +123,10 @@ extract_storage_stats() {
     # Handle empty output
     if [[ ! -s "$output_file" ]]; then
         echo "{\"error\": \"Failed to extract storage statistics\"}" > "$output_file"
+        log_error "Failed to extract storage statistics"
         return 1
+    else
+        log_info "Successfully extracted storage statistics"
     fi
     
     return 0
@@ -164,7 +170,10 @@ extract_system_info() {
     # Handle empty output
     if [[ ! -s "$output_file" ]]; then
         echo "{\"error\": \"Failed to extract system information\"}" > "$output_file"
+        log_error "Failed to extract system information"
         return 1
+    else
+        log_info "Successfully extracted system information"
     fi
     
     return 0
@@ -184,7 +193,10 @@ extract_sample_document() {
     # Handle empty output
     if [[ ! -s "$output_file" ]]; then
         echo "{\"sample_document\": {}, \"error\": \"Failed to extract sample document\"}" > "$output_file"
+        log_error "Failed to extract sample document for $db_name.$coll_name"
         return 1
+    else
+        log_info "Successfully extracted sample document for $db_name.$coll_name"        
     fi
     
     return 0
@@ -287,9 +299,11 @@ extract_schema_and_indexes() {
         echo "{\"error\": \"Failed to extract schema and indexes\"}" > "$output_file"
         log_error "Failed to extract schema for $db_name.$coll_name"
         return 1
+    else
+        log_info "Successfully extracted schema for $db_name.$coll_name" 
+
     fi
     
-    log_info "Successfully extracted schema for $db_name.$coll_name"
     return 0
 }
 
@@ -334,7 +348,10 @@ extract_workload_profile() {
     # Handle empty output
     if [[ ! -s "$output_file" ]]; then
         echo "{\"error\": \"Failed to extract workload profile\"}" > "$output_file"
+        log_error "Failed to extract workload profile for $db_name.$coll_name"
         return 1
+    else
+        log_info "Successfully extracted workload profile for $db_name.$coll_name"
     fi
     
     # Create simple workload summary, might be overkill 👷
@@ -342,6 +359,33 @@ extract_workload_profile() {
     
     return 0
 }
+
+# Function to extract users and roles
+extract_users_and_roles() {
+    local db_name=$1
+    local coll_name=$2
+    local coll_folder=$3
+    local output_file="$coll_folder/users_and_roles.json"
+
+    mongosh --quiet --host "$MONGO_HOST" --port "$MONGO_PORT" "${AUTH_ARGS[@]}" --eval "
+        JSON.stringify({
+            users: db.getUsers(),
+            roles: db.getRoles({ showPrivileges: true })
+        }, null, 2);
+    " > "$output_file" 2>/dev/null
+
+    # Handle empty output
+    if [[ ! -s "$output_file" ]]; then
+        echo "{\"error\": \"Failed to extract users and roles\"}" > "$output_file"
+        log_error "Failed to extract users and roles"
+        return 1
+    else
+        log_info "Successfully extracted users and roles"
+    fi
+
+    return 0
+}
+
 
 # Create collection summary
 create_collection_summary() {
@@ -411,6 +455,7 @@ for DB_NAME in "${DATABASES[@]}"; do
             extract_sample_document "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
             extract_schema_and_indexes "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
             extract_workload_profile "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
+            extract_users_and_roles "$DB_NAME" "$coll_name" "$COLL_FOLDER" || collection_status="partial" &
             
             # Create summary
             echo "{
