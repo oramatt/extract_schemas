@@ -13,15 +13,19 @@ This repository provides two scripts for working with MongoDB metadata extractio
 - **System Information**: Fetches MongoDB version, CPU usage, memory consumption, disk I/O, and network activity statistics.
 - **Sample Document Retrieval**: Extracts a representative document from each collection using `findOne()`.
 - **Schema and Index Detection**: 
-  - Identifies field types in collections by examining up to 100 sample documents
+  - Identifies field types in collections by examining up to 300 sample documents (increased from 100)
   - Detects MongoDB-specific types (ObjectId, Date, NumberLong, etc.)
   - Recognizes GeoJSON structures (Point, LineString, Polygon)
   - Extracts all collection indexes using `getIndexes()`
 - **Workload Profile Extraction**:
   - Uses the MongoDB profiler data when enabled (`profiling level 1-2`)
   - Falls back to MongoDB in-memory logs (`getLog: 'global'`) when profiling is disabled
+- **User and Role Information**: Captures user details and associated role permissions using `getUsers()` and `getRoles()`.
 - **Parallel Processing**: Extracts data from multiple collections concurrently with a configurable job limit.
-- **Basic Authentication Support**: Supports username/password authentication with custom authentication database.
+- **Authentication Support**: Supports username/password authentication with custom authentication database.
+- **TLS/SSL Support**: Optional TLS/SSL connection capabilities for secure data extraction.
+- **Robust Error Handling**: Each extraction function has error checking with appropriate logging.
+- **Detailed Logging**: Comprehensive timestamped logs for tracking extraction progress.
 
 ### restoreMongo.py
 - **Collection Recreation**: Provides a pathway to recreate collections from extracted metadata.
@@ -53,14 +57,15 @@ Edit the script variables to define the MongoDB connection details and databases
 # MongoDB connection details
 MONGO_HOST="localhost"
 MONGO_PORT="23456"
-DATABASES=("test" "yelp")  # Space delimited list of databases to scan
+DATABASES=("test" "tweetme" "emptyonpurpose")  # Space delimited list of databases to scan
 OUTPUT_DIR="mongodb_metadata"  # Base directory for output
 PARALLEL_LIMIT=4  # Maximum number of parallel jobs
 
-# Optional MongoDB authentication
+# MongoDB authentication
 USERNAME=""  # MongoDB username (if needed)
 PASSWORD=""  # MongoDB password (if needed)
 AUTH_DB=""   # Authentication database (e.g., "admin", if needed)
+USE_TLS="false"  # Set to "true" to enable TLS/SSL
 ```
 
 ### restoreMongo.py
@@ -102,15 +107,17 @@ mongodb_metadata/
    │   │   ├── system_info.json
    │   │   ├── example_document.json
    │   │   ├── schema_and_indexes.json
-   │   │   └── workload.json
+   │   │   ├── workload.json
+   │   │   ├── users_and_roles.json
+   │   │   └── summary.json
+   ├── extract_YYYYMMDD_HHMMSS.log  # Extraction log file
 ```
 
 ## Limitations
 ### extractMongo.sh
-- Examines only up to 100 documents per collection for schema detection
+- Examines only up to 300 documents per collection for schema detection (increased from 100)
 - Detects only top-level fields in documents (limited support for nested objects)
 - All data extraction occurs at the collection level
-- No built-in TLS/SSL support
 
 ### restoreMongo.py
 - Creates only one synthetic document when using schema-based generation
@@ -131,3 +138,7 @@ These scripts aid in analyzing MongoDB workloads and restoring collections for t
   - The `restoreMongo.py` script will attempt to recreate MongoDB databases and the associated collections. Customers can navigate the directory structure and rename folders that represent either databases or collections based on their needs. To create new databases or collections, simply copy the folder structure to the appropriate base directory. Additionally, customers can edit the `example_document.json` and/or `schema_and_indexes.json` to remove any data they feel is sensitive or proprietary.
 4. Does the extraction process modify my MongoDB data?
   - No, the extraction process is entirely read-only and does not modify your MongoDB data in any way.
+5. How are the extraction logs organized?
+  - The script creates a timestamped log file in the output directory that captures all operations during the extraction process, including errors and successful extractions.
+6. What happens if the script encounters an error during extraction?
+  - The script implements robust error handling. If an error occurs during extraction of a specific piece of metadata, that operation will be marked as failed, but the script will continue with other extraction tasks. A detailed error message will be logged, and the collection's summary.json will indicate a "partial" extraction status.
